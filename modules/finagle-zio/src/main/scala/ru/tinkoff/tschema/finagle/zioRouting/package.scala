@@ -1,13 +1,13 @@
-package ru.tinkoff.tschema.finagle.routing
+package ru.tinkoff.tschema.finagle
 import com.twitter.finagle.http.{Response, Status}
 import com.twitter.util.{Future, Promise}
-import ru.tinkoff.tschema.finagle.Rejection
 import zio.{Exit, Fiber, Has, Runtime, ZIO}
 
-object zioRouting {
+package object zioRouting {
   type NoError <: Nothing
   type None >: Any
 
+  type ZRouting   = ZioRouting[Any]
   type HasRouting = Has[ZRouting]
 
   type UIOHttp[+A]         = ZIO[ZioRouting[None], Fail[NoError], A]
@@ -24,7 +24,7 @@ object zioRouting {
   type RIOH[-R, +A]     = ZIO[HasRouting with R, Fail[Throwable], A]
   type ZIOH[-R, +E, +A] = ZIO[HasRouting with R, Fail[E], A]
 
-  private[routing] def execWithRuntime[R, E <: Throwable](runtime: Runtime[R])(
+  private[zioRouting] def execWithRuntime[R, E <: Throwable](runtime: Runtime[R])(
       zio: ZIO[R, E, Response]
   ): Future[Response] = {
     val promise = Promise[Response]
@@ -50,7 +50,7 @@ object zioRouting {
     zio.fork.tap(setInterrupt) >>= (_.join)
   }
 
-  private[routing] def execResponse[R, R1, E <: Throwable](
+  private[zioRouting] def execResponse[R, R1, E <: Throwable](
       runtime: zio.Runtime[R],
       zioResponse: ZIO[R1, Fail[E], Response],
       f: R => R1

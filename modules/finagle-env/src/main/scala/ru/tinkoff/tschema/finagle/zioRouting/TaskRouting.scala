@@ -1,4 +1,4 @@
-package ru.tinkoff.tschema.finagle.routing
+package ru.tinkoff.tschema.finagle.zioRouting
 
 import cats.syntax.semigroup._
 import com.twitter
@@ -7,7 +7,7 @@ import com.twitter.finagle.{Service, http}
 import com.twitter.util.{Future, Promise}
 import monix.eval.Task
 import monix.execution.Scheduler
-import ru.tinkoff.tschema.finagle.routing.TaskRouting.TaskHttp
+import ru.tinkoff.tschema.finagle.zioRouting.TaskRouting.TaskHttp
 import ru.tinkoff.tschema.finagle.{ConvertService, LiftHttp, Rejection, Routed, RoutedPlus, RunHttp}
 import ru.tinkoff.tschema.utils.SubString
 import tofu.env.Env

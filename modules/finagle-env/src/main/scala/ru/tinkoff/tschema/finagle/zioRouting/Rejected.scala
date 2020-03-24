@@ -1,4 +1,4 @@
 package ru.tinkoff.tschema.finagle
-package routing
+package zioRouting
 
 final case class Rejected(rej: Rejection) extends Throwable
